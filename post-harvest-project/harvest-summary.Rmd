@@ -1,0 +1,61 @@
+---
+title: "Harvest Data Assessment"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+
+harvest_regrade <- read_csv("harvest-regrade.csv")
+harvest <- harvest_regrade %>% 
+  distinct(Origin, `Crop Year`, `Origin & Warehouse`, `Segregation Type`,
+           `Segregation_AVG`, `Segregation_Min`, `Segregation_Max`,
+           `Segregation_Stdev`, `Harvest Hull_AVG`, `Harvest Hull_Min`,
+           `Harvest Hull_Max`, `Harvest Hull_Stdev`, `Harvest DAM_AVG`,
+           `Harvest DAM_Min`, `Harvest DAM_Max`, `Harvest DAM_Stdev`,
+           `Harvest LSK_AVG`, `Harvest LSK_Min`, `Harvest LSK_Max`,
+           `Harvest LSK_Stdev`, `Harvest Aflatoxin_AVG`, 
+           `Harvest Aflatoxin_Min`, `Harvest Aflatoxin_Max`, 
+           `Harvest Aflatoxin_Stdev`) %>% 
+  filter(!is.na(`Harvest Aflatoxin_AVG`))
+
+```
+
+### Harvest Data
+
+There are ```r nrow(harvest)``` unique records for harvest data in the data set compared to the ```r nrow(harvest_regrade)``` records for regrade.
+
+### Target Variables
+```{r}
+ggplot(harvest, aes(x = `Harvest LSK_AVG`, y = `Harvest DAM_AVG`)) +
+  geom_point()
+```
+
+```{r}
+ggplot(harvest, aes(x = `Harvest DAM_AVG`, y = `Harvest Hull_AVG`)) +
+  geom_point()
+```
+
+```{r}
+ggplot(harvest, aes(x = `Harvest LSK_AVG`, y = `Harvest Hull_AVG`)) +
+  geom_point()
+```
+
+### Target Variables with Aflatoxin
+```{r}
+ggplot(harvest, aes(x = `Harvest LSK_AVG`, y = `Harvest Aflatoxin_AVG`)) +
+  geom_point()
+```
+
+```{r}
+ggplot(harvest, aes(x = `Harvest DAM_AVG`, y = `Harvest Aflatoxin_AVG`)) +
+  geom_point()
+```
+
+```{r}
+ggplot(harvest, aes(x = `Harvest Hull_AVG`, y = `Harvest Aflatoxin_AVG`)) +
+  geom_point()
+```
